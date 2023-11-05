@@ -2,8 +2,6 @@
 
 <img src = './imgs/geranio-cover.png' width = 90%>
 
-GERANIO: Graph Evolution Rules ANalytics vIsualization tOolkit
-
 GERANIO is a comprehensive toolkit designed to facilitate the application, visualization and analysis of graph evolution rules algorithms. 
 Graph evolution rules capture interpretable patterns describing the transformation of a small subgraph into a new subgraph, providing valuable insights into evolutionary behaviors. This repository provides a set of modules to help you prepare input data in the right format, run algorithms, read the output, and analyze and visualize the results.
 
