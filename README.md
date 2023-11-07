@@ -20,7 +20,7 @@ The following pipeline describes the process:
 
 ## Getting Started
 
-To get started with GERANIO, you can follow the process described in the jupyter notebook ```geranio.ipynb``` 
+To get started with GERANIO, you can read the introduction on the slides available <a href = 'https://drive.google.com/file/d/1DiQ48f2q3CRYKJ2qF_LhKmU74hD5Gnp8/view?usp=sharing'>here</a> and/or follow the process described in the jupyter notebook ```geranio.ipynb``` 
 
 You can also use a local version of the deep note project available here: <a href = 'https://deepnote.com/workspace/alessia-space-d070911a-c830-446b-96a0-7461fcb34d58/project/GERANIO-610e0907-6802-4939-b7da-d8a5a67aba28/notebook/geranio-7dec84036ec1460b9c8981dc15df58f2'>geraniodeepnote</a>
 
