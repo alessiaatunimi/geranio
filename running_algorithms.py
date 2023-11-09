@@ -3,16 +3,34 @@ import os
 
 
 
-def run_algorithm(algo, sup, maxedge, filename, outputfile, 
+def run_algorithm(algorithm, sup, maxedge, filename, outputfile, 
                   verbose = False, 
                   directed = True, edge_removal = False, 
                   projection = 'full', edge_color = False, node_color = False,
                  ):
     
+    '''
+    Runs the command of the original ger algorithm
+
+    algorithm = ger algorithm choose between GERM: ['germ','Germ','GERM'] or EvoMine: ['evomine','EvoMine','EVOMINE','Evomine']
+    sup = max support, for reference, in the classical dblp dataset, the support is usually set to 5000
+    maxedge = maxmimum number of edge of the postcondition (head), normally set to 3 or 4
+    filename = input file of the algorithm 
+    outputfile = name of the output file (renaming the original output)
+    verbose = default is False, otherwise it will return the full output of the original command line (it can be long, especially for evomine)
+    directed = default is True, it's important to specify it for the Evomine algorithm because it supports both directed and undirected graphs
+    edge_removal = default is False, it's important to specify it for the Evomine algorithm 
+                   because it supports also edge removal as event, not only edge insertion/creation
+    projection  = type of support, choose from ['full', 'neigh','event'], 'full', 'neigh' corresponds to the MIB support while 'event' for the event support
+    edge_color = default is False, it's important to specify it for the Evomine algorithm because it supports also edge-labeled graphs 
+    nodee_color = default is False, it's important to specify it for the Evomine algorithm because it supports also node-labeled graphs      
+
+    OUTPUT
+    write the output file in outputfile path
+
+    '''
     
-    
-    
-    if algo in ['germ','Germ','GERM']:
+    if algorithm in ['germ','Germ','GERM']:
         
         command = f"./algorithms/germ {sup} {filename} {maxedge} > /dev/null"
         if verbose: command = f"./algorithms/germ {sup} {filename} {maxedge}"
@@ -27,8 +45,8 @@ def run_algorithm(algo, sup, maxedge, filename, outputfile,
         
         print(f'Output moved from {filename}.out.{sup}.{maxedge}.REL to ./output-files/{outputfile}')
 
-        
-    elif algo in ['evomine','EvoMine','EVOMINE','Evomine']:
+        ['germ','Germ','GERM']
+    elif algorithm in ['evomine','EvoMine','EVOMINE','Evomine']:
         params = '-t'
         
         if directed: params += ' -d'
