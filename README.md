@@ -24,4 +24,20 @@ To get started with GERANIO, you can read the introduction on the slides availab
 
 You can also use a local version of the deep note project available here: <a href = 'https://deepnote.com/workspace/alessia-space-d070911a-c830-446b-96a0-7461fcb34d58/project/GERANIO-610e0907-6802-4939-b7da-d8a5a67aba28/notebook/geranio-7dec84036ec1460b9c8981dc15df58f2'>geraniodeepnote</a>
 
+## Citations
+If you use the code or ideas in this repository for your research, please consider citing the following paper:
+
+```bibtex
+@inproceedings{galdeman2023unfolding,
+  title={Unfolding temporal networks through statistically significant graph evolution rules},
+  author={Galdeman, Alessia and Zignani, Matteo and Gaito, Sabrina},
+  booktitle={2023 IEEE 10th International Conference on Data Science and Advanced Analytics (DSAA)},
+  pages={1--10},
+  year={2023},
+  organization={IEEE}
+}
+```
+
+
+
 

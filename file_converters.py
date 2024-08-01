@@ -112,19 +112,17 @@ def from_txtfile_to_gerinput(input_path, output_path, separator = ','):
     
 
 def from_ger_output(filename): 
-'''
-    Overall function to obtain a dictionary of rules from ger algorithm output
+    '''Overall function to obtain a dictionary of rules from ger algorithm output
 
-    INPUT:
-    filename = path where output of the ger algorithm is saved
+        INPUT:
+        filename = path where output of the ger algorithm is saved
 
-    OUTPUT:
-    info_list = list of string per pattern (clean version of the file)
-    patterns= dictionary of patterns, each pattern has this format --> patternid : {support: s, nodes : [a,b,c], edges: [(a,b,ts)]} 
-    support_patterns = [filtered version of patterns] dictionary that map each pattern index to its support --> {patternid: support}
-    mapping = dictionary that map the id of a pattern in patterns to the id in file or in info_list
-    '''
-    
+        OUTPUT:
+        info_list = list of string per pattern (clean version of the file)
+        patterns= dictionary of patterns, each pattern has this format --> patternid : {support: s, nodes : [a,b,c], edges: [(a,b,ts)]} 
+        support_patterns = [filtered version of patterns] dictionary that map each pattern index to its support --> {patternid: support}
+        mapping = dictionary that map the id of a pattern in patterns to the id in file or in info_list'''
+
     super_string = ''
     file = list(open(filename,'r'))
     for i in range(len(file)):
