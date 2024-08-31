@@ -13,6 +13,9 @@ from scipy.sparse import csr_matrix
 import os
 import pickle
 
+
+
+
 flatten = lambda l: [item for sublist in l for item in sublist]
 def pretty_now():
     from datetime import datetime
@@ -57,21 +60,38 @@ def get_canonical_code_fromedges(edges, n_nodes):
 
 
 def mapping_pattern_ids(patterns, support, mapped_patterns_path, 
-                        general_mapping = pickle.load(open('general_mapping_canonical.p','rb') ),
-                        general_mapping_updatename = 'general_mapping_canonical',
+                        general_mapping_name = 'general_mapping_canonical.p',
+                        general_mapping_updatename = 'general_mapping_canonical', 
+                        check_meaningfull = False,
                        save_mapped = True):
     
+    if not os.path.isfile(general_mapping_name):
+        pickle.dump({},open(general_mapping_name,'wb') )
+    
+    general_mapping = pickle.load(open(general_mapping_name,'rb') )
+
+
     new_patterns = defaultdict(dict)
     new_support = {}
     
     for p,edges in patterns.items():
+        if check_meaningfull: 
+            ts = set([x[2] for x in edges])
+            if len(ts) >1: 
+                e_layered, n_nodes = to_layered_edges(edges)
+                labels_evolution = get_canonical_code_fromedges(e_layered, n_nodes)
+                new_patterns[labels_evolution[0]]['info'] = labels_evolution[1:]
+                new_patterns[labels_evolution[0]]['edges'] = edges
+                new_support[labels_evolution[0]] = support[p]
 
-        e_layered, n_nodes = to_layered_edges(edges)
-        labels_evolution = get_canonical_code_fromedges(e_layered, n_nodes)
-        new_patterns[labels_evolution[0]]['info'] = labels_evolution[1:]
-        new_patterns[labels_evolution[0]]['edges'] = edges
-        new_support[labels_evolution[0]] = support[p]
-        
+        else:
+            ts = set([x[2] for x in edges])
+            if len(ts) >1: 
+                e_layered, n_nodes = to_layered_edges(edges)
+                labels_evolution = get_canonical_code_fromedges(e_layered, n_nodes)
+                new_patterns[labels_evolution[0]]['info'] = labels_evolution[1:]
+                new_patterns[labels_evolution[0]]['edges'] = edges
+                new_support[labels_evolution[0]] = support[p]
     #general mapping short id
     if len(general_mapping) == 0: 
         general_mapping = {canonical: (i,info)  for i,(canonical,info) in enumerate(new_patterns.items())} 
@@ -80,7 +100,7 @@ def mapping_pattern_ids(patterns, support, mapped_patterns_path,
             if canonical not in general_mapping.keys():
                 next_i = len(general_mapping)
                 general_mapping[canonical] = (next_i, info)
-    pickle.dump(general_mapping,open(f'{general_mapping_updatename}.p','wb') )
+    pickle.dump(general_mapping,open(general_mapping_updatename,'wb') )
     
     new_patterns = {general_mapping[k][0]: {'canonical':k, 'info':v['info'],'edges':v['edges']} for k,v in new_patterns.items()}
     new_support = {general_mapping[k][0]: s for k,s in new_support.items()}

@@ -13,16 +13,6 @@ def mapping_nodes(edges_list,vertices_list):
     
     '''
     it changes the id of vertixes in order to not have any missing value
-
-    INPUT:
-    edges_list = edge list where each edge is expressed in the following format: (source, destination, timestamp)
-    vertices_list = node list 
-
-    OUTPUT:
-
-    edges_list = edge list mapped with incremental node indexes
-    vertices_list = node list mapped with incremental node indexes
-
     '''
     vertices = {node:i for i,node in enumerate(vertices_list)} 
     vertices_list = [vertices[node] for node in vertices_list]
@@ -32,18 +22,8 @@ def mapping_nodes(edges_list,vertices_list):
 
 def from_stringlist_to_edgelist(edges, separator = ','): 
     '''
-    It is the first step to obtain a file readable for ger algorithm
-
-    INPUT:
-    edges = must be a list of strings of this format: source{separator}destination{separator}timestamp
-            where the timestamp is an incremental integer, not datetime or any other python format for date
-            if separator = '0', then each elemet of the list would be like "source, destination, timestamp\n"
-    separator = the character between elements 
-
-    OUTPUT:
-    e = edge list mapped through mapping_nodes function
-    v = node list mapped through mapping_nodes function
-
+    it is the first step to obtain a file readable for germ from a string of edges
+    take as input a list of string with just the edge and the time stamp
     '''
     
     edges_list=[edge.strip('\n').split(separator,3) for edge in edges]
@@ -60,14 +40,7 @@ def from_stringlist_to_edgelist(edges, separator = ','):
 
 def from_edgelists_to_gerinput(dataset_path,edges_list,vertices_list):
     '''
-    it is the second step to obtain a file readable for germ, subsequent to from_stringlist_to_edgelist
-
-    INPUT:
-    dataset_path = path where to write the output file, that will be the input for the ger algorithm. Preferably use the input-file/ forlder
-    edges_list = mapped edge list obtained through from_stringlist_to_edgelist
-    vertices_list = mapped node list obtained through from_stringlist_to_edgelist
-
-    NO OUTPUT, the function write the file
+    it is the second step to obtain a file readable for germ, subsequent to from_string_list_to_lists
     '''
     
     nodes_to_write = [f"v {n} 0\n" for n in vertices_list]
@@ -88,19 +61,7 @@ def from_edgelists_to_gerinput(dataset_path,edges_list,vertices_list):
 
 def from_txtfile_to_gerinput(input_path, output_path, separator = ','):
     '''
-    Overall function to obtain a file readable for ger algorithm
-
-    INPUT:
-    input_path = path where the raw edge list is contained. 
-            The input list must be a list of strings of this format: source{separator}destination{separator}timestamp
-            where the timestamp is an incremental integer, not datetime or any other python format for date
-            if separator = '0', then each elemet of the list would be like "source, destination, timestamp\n"
-
-    output_path = path where to write the file readable from the ger algorithm
-    separator = the character between elements 
-
-    NO OUTPUT
-    
+    overall function to obtain a readable file from a list of string
     '''
     edges = list(open(input_path, 'r'))
     e,v = from_stringlist_to_edgelist(edges, separator)
@@ -112,17 +73,9 @@ def from_txtfile_to_gerinput(input_path, output_path, separator = ','):
     
 
 def from_ger_output(filename): 
-    '''Overall function to obtain a dictionary of rules from ger algorithm output
-
-        INPUT:
-        filename = path where output of the ger algorithm is saved
-
-        OUTPUT:
-        info_list = list of string per pattern (clean version of the file)
-        patterns= dictionary of patterns, each pattern has this format --> patternid : {support: s, nodes : [a,b,c], edges: [(a,b,ts)]} 
-        support_patterns = [filtered version of patterns] dictionary that map each pattern index to its support --> {patternid: support}
-        mapping = dictionary that map the id of a pattern in patterns to the id in file or in info_list'''
-
+    '''
+    take the file output by germ
+    '''
     super_string = ''
     file = list(open(filename,'r'))
     for i in range(len(file)):
@@ -150,20 +103,15 @@ def from_ger_output(filename):
                        'edges':[edges_list[k:k+3] for k in range(0, len(edges_list), 3)]}
         patterns[i]['edges'] = [tuple(sub) for sub in patterns[i]['edges'] ]
     return info_list, patterns, support_patterns, mapping
-   
+    '''
+    return:
+    info_list:= list of string per pattern (clean version of the file)
+    patterns:= dictionary of patterns, each pattern is itself a dictionary
+    support_patterns:= dictionary that map each pattern index to its support
+    mapping:= dictionary that map the id of a pattern in patterns to the id in file or in info_list
+    '''
     
 def obtain_pattern_list(patterns,support, algorithm):
-    '''
-   Fuction to obtain shorter versions of the patterns dictionary obtained thorugh the from_ger_output function
-
-    INPUT:
-    patterns = patterns dictionary from the from_ger_output function
-    support = support dfictionary from the from_ger_output function
-    algorithm = ger algorithm choose between GERM: ['germ','Germ','GERM'] or EvoMine: ['evomine','EvoMine','EVOMINE','Evomine']
-
-    OUTPUT:
-    pattern_list = dictionary of the form {ruleid: (edges 3-tuples)}
-    support'''
     pattern_list = [patterns[i]['edges'] for i in patterns.keys()]
     if algorithm in ['evomine', 'EvoMine','Evomine']: 
         mapping_ts = {3:0, 1:1}
